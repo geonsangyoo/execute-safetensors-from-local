@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "execute-safetensors-from-local"
+version = "0.1.0"
+description = "A Python library for running LLM models including LLaDA stored in safetensors format from local"
+authors = [{name = "Geonsang Yoo", email = "geonsangyoo@gmail.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.black]
+# Target Python version
+target-version = ['py38']
+
+# Line length
+line-length = 88
+
+# Include patterns
+include = '\.pyi?$'
+
+# Exclude patterns
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# Skip magic trailing comma
+skip-magic-trailing-comma = false
+
+# Use parentheses in line continuation
+preview = false
+
+[tool.isort]
+# Profile to use
+profile = "black"
+
+# Multi-line output mode
+multi_line_output = 3
+
+# Line length
+line_length = 88
+
+# Known first party modules
+known_first_party = []
+
+# Known third party modules
+known_third_party = [
+    "torch",
+    "transformers",
+    "safetensors",
+    "accelerate",
+    "sentencepiece",
+    "protobuf",
+    "numpy",
+    "tqdm",
+    "huggingface_hub",
+    "tokenizers",
+    "mypy",
+    "black",
+    "flake8",
+    "isort",
+    "types-requests",
+    "bandit",
+    "safety"
+]
+
+# Section order
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+# Skip files
+skip = [".git", "__pycache__", ".venv", ".mypy_cache", "build", "dist", "*.egg-info"]
+
+# Force single line imports
+force_single_line = false
+
+# Include trailing comma
+include_trailing_comma = true
+
+# Force grid wrap
+force_grid_wrap = 0
+
+# Use parentheses
+use_parentheses = true
+
+# Ensure newline before comments
+ensure_newline_before_comments = true
