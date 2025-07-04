@@ -10,8 +10,12 @@ import logging
 import os
 import sys
 
+from dotenv import load_dotenv
 from huggingface_hub import snapshot_download
 from transformers import AutoConfig, AutoTokenizer
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -23,7 +27,6 @@ logger = logging.getLogger(__name__)
 def download_model(
     model_name: str,
     output_dir: str,
-    revision: str = "main",
     use_auth_token: bool = False,
 ) -> None:
     """
@@ -32,7 +35,6 @@ def download_model(
     Args:
         model_name: Name of the model on Hugging Face Hub
         output_dir: Directory to save the model
-        revision: Model revision/branch to download
         use_auth_token: Whether to use authentication token
     """
     try:
@@ -42,12 +44,22 @@ def download_model(
         # Create output directory
         os.makedirs(output_dir, exist_ok=True)
 
+        # Get token from environment variable if use_auth_token is True
+        token = None
+        if use_auth_token:
+            token = os.getenv("HUGGING_FACE_USE_AUTH_TOKEN")
+            if not token:
+                logger.warning(
+                    "HUGGING_FACE_USE_AUTH_TOKEN not found in environment variables"
+                )
+                logger.info("Please set HUGGING_FACE_USE_AUTH_TOKEN in your .env file")
+                logger.info("You can copy env.example to .env and add your token")
+
         # Download the model
         snapshot_download(
             repo_id=model_name,
             local_dir=output_dir,
-            revision=revision,
-            token=use_auth_token,
+            token=token,
             local_dir_use_symlinks=False,
         )
 
@@ -105,22 +117,16 @@ def verify_model(model_dir: str) -> None:
 def list_available_models() -> None:
     """List some popular models available for download."""
     models = [
-        "microsoft/DialoGPT-medium",
-        "gpt2",
-        "gpt2-medium",
-        "gpt2-large",
-        "gpt2-xl",
-        "EleutherAI/gpt-neo-125M",
-        "EleutherAI/gpt-neo-1.3B",
-        "EleutherAI/gpt-neo-2.7B",
-        "microsoft/DialoGPT-small",
-        "microsoft/DialoGPT-large",
+        "LLaDA-8B-Instruct",
+        "google/gemma-3-4b-it-qat-q4_0-gguf",
+        "google/gemma-3n-E2B-it",
+        "Qwen/Qwen2.5-3B-Instruct",
+        "meta-llama/Llama-3.1-8B-Instruct",
     ]
 
-    print("Popular models available for download:")
+    print("Testing models available for download:")
     for i, model in enumerate(models, 1):
         print(f"{i}. {model}")
-    print("\nYou can also use any model from Hugging Face Hub.")
 
 
 def main() -> None:
@@ -133,9 +139,6 @@ def main() -> None:
     )
     parser.add_argument(
         "--output_dir", type=str, default="./models", help="Directory to save the model"
-    )
-    parser.add_argument(
-        "--revision", type=str, default="main", help="Model revision/branch to download"
     )
     parser.add_argument(
         "--use_auth_token",
@@ -160,9 +163,7 @@ def main() -> None:
         sys.exit(1)
 
     try:
-        download_model(
-            args.model_name, args.output_dir, args.revision, args.use_auth_token
-        )
+        download_model(args.model_name, args.output_dir, args.use_auth_token)
         print("\nModel downloaded successfully!")
         print("You can now run it with:")
         print(f"python llm_runner.py --model_path {args.output_dir} --interactive")

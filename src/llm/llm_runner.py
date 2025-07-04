@@ -42,12 +42,9 @@ class LLMRunner:
 
         logger.info(f"Initializing LLM Runner with model at: {self.model_path}")
 
-    def load_model(self, model_type: str = "auto") -> None:
+    def load_model(self) -> None:
         """
         Load the model and tokenizer.
-
-        Args:
-            model_type: Type of model to load ("auto", "llama", "gpt2", etc.)
         """
         try:
             logger.info("Loading tokenizer...")
@@ -200,12 +197,6 @@ def main() -> None:
         help="Path to the model directory containing safetensors files",
     )
     parser.add_argument(
-        "--model_type",
-        type=str,
-        default="auto",
-        help="Type of model (auto, llama, gpt2, etc.)",
-    )
-    parser.add_argument(
         "--interactive", action="store_true", help="Run in interactive mode"
     )
     parser.add_argument(
@@ -233,7 +224,7 @@ def main() -> None:
     try:
         # Initialize and load the model
         runner = LLMRunner(args.model_path)
-        runner.load_model(args.model_type)
+        runner.load_model()
 
         if args.interactive:
             runner.interactive_mode()
