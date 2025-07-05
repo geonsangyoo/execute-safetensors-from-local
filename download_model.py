@@ -39,9 +39,11 @@ def download_model(
     """
     try:
         logger.info(f"Downloading model: {model_name}")
-        logger.info(f"Output directory: {output_dir}")
+        logger.info(f"Output directory: {output_dir}/{model_name}")
 
         # Create output directory
+        os.makedirs(output_dir, exist_ok=True)
+        output_dir = f"{output_dir}/{model_name}"
         os.makedirs(output_dir, exist_ok=True)
 
         # Get token from environment variable if use_auth_token is True
