@@ -31,8 +31,8 @@ protobuf==6.31.1
 psutil==7.0.0
 pycodestyle==2.14.0
 pyflakes==3.4.0
-PyYAML==6.0.2
 python-dotenv==1.0.1
+PyYAML==6.0.2
 regex==2024.11.6
 requests==2.32.4
 safetensors==0.5.3
@@ -40,9 +40,9 @@ sentencepiece==0.2.0
 sympy==1.14.0
 tokenizers==0.15.2
 tomli==2.2.1
-torch==2.8.0.dev20250622
-torchaudio==2.8.0.dev20250622
-torchvision==0.23.0.dev20250622
+torch==2.7.1
+torchaudio==2.7.1
+torchvision==0.22.1
 tqdm==4.67.1
 transformers==4.38.2
 types-requests==2.32.4.20250611
