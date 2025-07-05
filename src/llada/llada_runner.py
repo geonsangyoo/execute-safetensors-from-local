@@ -6,6 +6,8 @@ Based on: https://github.com/ML-GSAI/LLaDA
 Fully compatible with transformers 4.53.0 with enhanced features.
 """
 
+import argparse
+
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -146,53 +148,86 @@ def generate(
 
 
 def main():
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(
+        description="LLaDA Runner for Masked Diffusion Models - Interactive Chat Mode"
+    )
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        default="../LLaDA-8B-Instruct",
+        help="Path to the LLaDA model directory",
+    )
+
+    args = parser.parse_args()
+
     device = "mps"
 
+    print(f"Loading model from: {args.model_path}")
     model = (
         AutoModel.from_pretrained(
-            "../LLaDA-8B-Instruct",
+            args.model_path,
             trust_remote_code=True,
             torch_dtype=torch.bfloat16,
         )
         .to(device)
         .eval()
     )
+
+    print("Loading tokenizer from: GSAI-ML/LLaDA-8B-Instruct")
     tokenizer = AutoTokenizer.from_pretrained(
         "GSAI-ML/LLaDA-8B-Instruct", trust_remote_code=True
     )
 
-    prompt = """
-    Lily can run 12 kilometers per hour for 4 hours.After that,
-    she runs 6 kilometers per hour. How many kilometers can she run in 8 hours?"
-    """
+    print("\n=== Interactive Chat Mode ===")
+    print("Type 'quit' to exit the chat.")
+    print("Type your message and press Enter to chat with the model.\n")
 
-    # Add special tokens for the Instruct model.
-    # The Base model does not require the following two lines.
-    m = [
-        {"role": "user", "content": prompt},
-    ]
-    prompt = tokenizer.apply_chat_template(
-        m, add_generation_prompt=True, tokenize=False
-    )
+    while True:
+        try:
+            user_input = input("Please send meesaage: ").strip()
 
-    input_ids = tokenizer(prompt)["input_ids"]
-    input_ids = torch.tensor(input_ids).to(device).unsqueeze(0)
+            if user_input.lower() in ["quit", "exit", "q"]:
+                print("Goodbye!")
+                break
 
-    out = generate(
-        model,
-        input_ids,
-        steps=128,
-        gen_length=128,
-        block_length=32,
-        temperature=0.0,
-        cfg_scale=0.0,
-        remasking="low_confidence",
-    )
-    print(
-        tokenizer.batch_decode(out[:, input_ids.shape[1] :], skip_special_tokens=True)[
-            0
-        ]
-    )
+            if not user_input:
+                continue
+
+            # Process the user input
+            m = [
+                {"role": "user", "content": user_input},
+            ]
+            prompt = tokenizer.apply_chat_template(
+                m, add_generation_prompt=True, tokenize=False
+            )
+
+            input_ids = tokenizer(prompt)["input_ids"]
+            input_ids = torch.tensor(input_ids).to(device).unsqueeze(0)
+
+            print("Generating response...")
+            out = generate(
+                model,
+                input_ids,
+                steps=128,
+                gen_length=128,
+                block_length=32,
+                temperature=0.0,
+                cfg_scale=0.0,
+                remasking="low_confidence",
+            )
+
+            response = tokenizer.batch_decode(
+                out[:, input_ids.shape[1] :], skip_special_tokens=True
+            )[0]
+            print(f"LLaDA model: {response}\n")
+
+        except KeyboardInterrupt:
+            print("\nGoodbye!")
+            break
+        except Exception as e:
+            print(f"Error: {e}")
+            print("Please try again.\n")
 
 
 if __name__ == "__main__":

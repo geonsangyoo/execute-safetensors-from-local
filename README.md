@@ -17,7 +17,7 @@ pip install -r requirements.txt
    - Edit `.env` and replace `your_token_here` with your Hugging Face token
    - Get your token from: https://huggingface.co/settings/tokens
 
-## Usage
+## Usage (LLM)
 
 ### Download Models
 
@@ -42,6 +42,7 @@ python download_model.py --list_models
 After downloading, you can run the models:
 
 ```bash
+# Run other models
 python src/llm/llm_runner.py --model_path "./models/qwen" --interactive
 ```
 
@@ -51,9 +52,33 @@ python src/llm/llm_runner.py --model_path "./models/qwen" --interactive
 
 ## Available Models
 
-Some popular models you can download:
+Some testing models you can download:
 - LLaDA-8B-Instruct
 - google/gemma-3-4b-it-qat-q4_0-gguf
 - google/gemma-3n-E2B-it
 - Qwen/Qwen2.5-3B-Instruct
 - meta-llama/Llama-3.1-8B-Instruct 
+
+## Usage (LLaDA Model)
+
+### Running LLaDA Model
+
+LLaDA supports running the GSAI-ML/LLaDA-8B-Instruct model in two ways:
+
+1. Using default path (../LLaDA-8B-Instruct):
+   ```bash
+   # Please download GSAI-ML/LLaDA-8B model and locate it to root's parent folder
+   python src/llada/llada_runner.py
+   ```
+
+2. Specifying a custom model path:
+   ```bash
+   python src/llada/llada_runner.py --model_path "/path/to/your/model"
+   ```
+
+The model will start in interactive chat mode. You can:
+- Type your message and press Enter to chat
+- Type 'quit', 'exit', or 'q' to end the session
+
+Note: Make sure to download the GSAI-ML/LLaDA-8B-Instruct model before running.
+The model will be loaded in bfloat16 precision.
