@@ -37,4 +37,4 @@ jobs:
 
     - name: Run lint check
       run: |
-        python lint.py --check-only 
+        python tools/linst/lint.py --check-only
