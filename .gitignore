@@ -197,4 +197,4 @@ cython_debug/
 .DS_Store
 
 # Model outputs
-models/
+models_cache/
