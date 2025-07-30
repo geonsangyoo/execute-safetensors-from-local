@@ -2,7 +2,7 @@
 LLM Runner
 
 Execute the ordinary model with the given prompt.
-Supports both single prompt execution and interactive chat mode.
+Supports interactive chat mode only.
 """
 
 import argparse
