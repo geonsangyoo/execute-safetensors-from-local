@@ -24,14 +24,8 @@ pip install -r requirements.txt
 Run the LLM models with your local model files:
 
 ```bash
-# Run with default settings
-python src/llm_runner.py
-
-# Run with custom model path
-python src/llm_runner.py --model_path_in_hugging_face "./models/qwen"
-
-# Run with custom parameters
-python src/llm_runner.py --model_path_in_hugging_face "./models/qwen" --prompt "What is machine learning?" --max_new_tokens 100 --temperature 0.8
+# Run with hugging face model (they are automatically downladed from Huggingface hub)
+python src/llm_runner.py --model_path_in_hugging_face google/gemma-3n-E4B-it 
 ```
 
 ## Environment Variables
