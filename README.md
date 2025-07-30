@@ -40,12 +40,11 @@ python src/llm_runner.py --model_path_in_hugging_face "./models/qwen" --prompt "
 
 ## Available Models
 
-Some testing models you can use:
+Some testing models you can use for example in Huggingface hub:
 - LLaDA-8B-Instruct
-- google/gemma-3-4b-it-qat-q4_0-gguf
-- google/gemma-3n-E2B-it
 - Qwen/Qwen2.5-3B-Instruct
-- meta-llama/Llama-3.1-8B-Instruct 
+- meta-llama/Llama-3.1-8B-Instruct
+- google/gemma-3n-E4B-it
 
 ## Usage (LLaDA Model)
 

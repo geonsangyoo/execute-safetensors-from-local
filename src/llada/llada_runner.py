@@ -19,12 +19,12 @@ def add_gumbel_noise(logits, temperature):
     The Gumbel max is a method for sampling categorical distributions.
     According to arXiv:2409.02908, for MDM, low-precision Gumbel Max improves
     perplexity score but reduces generation quality.
-    Thus, we use float64.
+    Thus, we use float32.
     """
     if temperature == 0:
         return logits
-    logits = logits.to(torch.float64)
-    noise = torch.rand_like(logits, dtype=torch.float64)
+    logits = logits.to(torch.float32)
+    noise = torch.rand_like(logits, dtype=torch.float32)
     gumbel_noise = (-torch.log(noise)) ** temperature
     return logits.exp() / gumbel_noise
 
@@ -212,7 +212,7 @@ def main():
                 steps=128,
                 gen_length=128,
                 block_length=32,
-                temperature=0.0,
+                temperature=0.6,
                 cfg_scale=0.0,
                 remasking="low_confidence",
             )
