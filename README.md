@@ -38,14 +38,6 @@ python src/llm_runner.py --model_path_in_hugging_face "./models/qwen" --prompt "
 
 - `HUGGING_FACE_USE_AUTH_TOKEN`: Your Hugging Face authentication token (required for private models)
 
-## Available Models
-
-Some testing models you can use for example in Huggingface hub:
-- LLaDA-8B-Instruct
-- Qwen/Qwen2.5-3B-Instruct
-- meta-llama/Llama-3.1-8B-Instruct
-- google/gemma-3n-E4B-it
-
 ## Usage (LLaDA Model)
 
 ### Running LLaDA Model
@@ -68,4 +60,4 @@ The model will start in interactive chat mode. You can:
 - Type 'quit', 'exit', or 'q' to end the session
 
 Note: Make sure you have the GSAI-ML/LLaDA-8B-Instruct model available before running.
-The model will be loaded in bfloat16 precision.
+The model will be loaded in bfloat32 precision.
